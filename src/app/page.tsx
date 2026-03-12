@@ -1,0 +1,546 @@
+import Link from "next/link";
+import {
+  MapPin,
+  Waves,
+  TreePine,
+  Sparkles,
+  ArrowRight,
+  Search,
+  Calendar,
+  Star,
+  Shield,
+  Zap,
+  Clock,
+  CheckCircle2,
+  Users,
+  TrendingUp,
+  MessageCircle,
+  ChevronRight,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { AnimatedCounter } from "@/components/ui/animated-counter";
+
+const services = [
+  {
+    icon: Waves,
+    title: "Pool Services",
+    description:
+      "Chemical balancing, skimming, filter maintenance, equipment repair, and resurfacing.",
+    color: "bg-blue-50 text-blue-600 group-hover:bg-blue-100",
+    borderColor: "group-hover:border-blue-200",
+    features: ["Weekly cleaning", "Chemical balance", "Equipment repair"],
+  },
+  {
+    icon: TreePine,
+    title: "Landscaping",
+    description:
+      "Professional lawn mowing, garden design, tree trimming, and irrigation systems.",
+    color: "bg-green-50 text-green-600 group-hover:bg-green-100",
+    borderColor: "group-hover:border-green-200",
+    features: ["Lawn mowing", "Garden design", "Tree trimming"],
+  },
+  {
+    icon: Sparkles,
+    title: "Maid Services",
+    description:
+      "Standard cleaning, deep cleaning, and full move-in/move-out property cleaning.",
+    color: "bg-purple-50 text-purple-600 group-hover:bg-purple-100",
+    borderColor: "group-hover:border-purple-200",
+    features: ["Standard clean", "Deep clean", "Move-in/out"],
+  },
+];
+
+const steps = [
+  {
+    icon: Search,
+    title: "Browse the Map",
+    description:
+      "Open the explore page and see verified service professionals near your location in real time.",
+  },
+  {
+    icon: Calendar,
+    title: "Book Instantly",
+    description:
+      "Pick a service, choose a date, and send a booking request. Get responses in minutes, not days.",
+  },
+  {
+    icon: Star,
+    title: "Rate & Review",
+    description:
+      "After the job is done, leave a review to help others find the best pros in their area.",
+  },
+];
+
+const perks = [
+  {
+    icon: Shield,
+    title: "Verified Pros",
+    description: "Every contractor is vetted and verified before joining the platform.",
+  },
+  {
+    icon: Zap,
+    title: "Instant Booking",
+    description: "No phone tag. Book services in seconds with real-time availability.",
+  },
+  {
+    icon: MessageCircle,
+    title: "In-App Messaging",
+    description: "Chat directly with your service pro. No need to share personal numbers.",
+  },
+  {
+    icon: Clock,
+    title: "Transparent Pricing",
+    description: "See prices upfront before you book. No hidden fees, no surprises.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Track Everything",
+    description: "Real-time booking updates, service history, and spending insights.",
+  },
+  {
+    icon: Users,
+    title: "Community Driven",
+    description: "Honest reviews from real customers help you pick the right pro every time.",
+  },
+];
+
+const testimonials = [
+  {
+    name: "Sarah M.",
+    role: "Homeowner",
+    quote:
+      "I found a pool cleaner 10 minutes after downloading. He was at my house the same day. This app is a game changer.",
+    rating: 5,
+    avatar: "SM",
+  },
+  {
+    name: "Carlos R.",
+    role: "Landscaping Pro",
+    quote:
+      "Curb fills my empty slots between jobs. I've picked up 12 new recurring clients in 3 months. My revenue is up 40%.",
+    rating: 5,
+    avatar: "CR",
+  },
+  {
+    name: "Jessica T.",
+    role: "Property Manager",
+    quote:
+      "Managing cleaning for 15 units used to be a nightmare. Now I book everything through Curb in minutes.",
+    rating: 5,
+    avatar: "JT",
+  },
+];
+
+export default function HomePage() {
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Navbar */}
+      <nav className="fixed top-0 z-50 w-full border-b border-white/10 bg-emerald-900/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500">
+              <MapPin className="h-5 w-5 text-white" />
+            </div>
+            <span className="text-xl font-bold text-white">Curb</span>
+          </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/login">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-emerald-100 hover:bg-white/10 hover:text-white"
+              >
+                Log in
+              </Button>
+            </Link>
+            <Link href="/signup">
+              <Button
+                size="sm"
+                className="bg-white text-emerald-800 hover:bg-emerald-50"
+              >
+                Get Started
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-emerald-900 via-emerald-800 to-emerald-700 pt-16">
+        {/* Animated background dots */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute left-1/4 top-1/4 h-64 w-64 rounded-full bg-emerald-400 blur-[128px]" />
+          <div className="absolute right-1/4 bottom-1/4 h-64 w-64 rounded-full bg-teal-400 blur-[128px]" />
+          <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-300 blur-[200px]" />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-20 sm:px-6 sm:pb-32 sm:pt-28 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            {/* Badge */}
+            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-1.5 text-sm text-emerald-200 backdrop-blur">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              Live pros available in your area
+            </div>
+
+            <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-7xl">
+              Home services,{" "}
+              <span className="bg-gradient-to-r from-emerald-300 to-teal-200 bg-clip-text text-transparent">
+                reimagined
+              </span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-emerald-100/90 sm:text-xl">
+              See verified pool, landscaping, and cleaning pros on a live map.
+              Book instantly. Chat in-app. No more calling around.
+            </p>
+
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Link href="/explore">
+                <Button
+                  size="lg"
+                  className="group bg-white px-8 text-emerald-800 shadow-xl shadow-emerald-900/30 hover:bg-emerald-50"
+                >
+                  Find a Pro Near Me
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
+              <Link href="/signup?role=contractor">
+                <Button
+                  size="lg"
+                  variant="ghost"
+                  className="border border-emerald-400/30 text-white hover:bg-white/10"
+                >
+                  Join as a Contractor
+                </Button>
+              </Link>
+            </div>
+
+            {/* Social proof strip */}
+            <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-emerald-200/70">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                <span className="text-sm">Free to browse</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                <span className="text-sm">Verified professionals</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                <span className="text-sm">Real-time availability</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Wave divider */}
+        <div className="relative -mb-1">
+          <svg viewBox="0 0 1440 80" fill="none" className="w-full">
+            <path
+              d="M0 80h1440V30c-200 30-400 50-720 50S200 60 0 30v50z"
+              fill="white"
+            />
+          </svg>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="border-b border-gray-100 bg-white py-12">
+        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-8 px-4 sm:grid-cols-4 sm:px-6">
+          {[
+            { value: 2500, suffix: "+", label: "Active Contractors" },
+            { value: 15000, suffix: "+", label: "Jobs Completed" },
+            { value: 4.9, suffix: "", label: "Avg Rating", isDecimal: true },
+            { value: 98, suffix: "%", label: "Client Satisfaction" },
+          ].map((stat) => (
+            <div key={stat.label} className="text-center">
+              <p className="text-3xl font-bold text-gray-900 sm:text-4xl">
+                {stat.isDecimal ? (
+                  "4.9"
+                ) : (
+                  <AnimatedCounter
+                    end={stat.value}
+                    suffix={stat.suffix}
+                    duration={2200}
+                  />
+                )}
+              </p>
+              <p className="mt-1 text-sm text-gray-500">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="bg-white py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-wider text-emerald-600">
+              How It Works
+            </p>
+            <h2 className="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
+              Booked in 3 simple steps
+            </h2>
+          </div>
+          <div className="mt-16 grid gap-8 sm:grid-cols-3">
+            {steps.map((step, i) => (
+              <div key={step.title} className="relative text-center">
+                {i < steps.length - 1 && (
+                  <div className="absolute left-[calc(50%+40px)] top-8 hidden h-px w-[calc(100%-80px)] bg-gradient-to-r from-emerald-300 to-transparent sm:block" />
+                )}
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600">
+                  <step.icon className="h-7 w-7" />
+                </div>
+                <div className="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-xs font-bold text-white">
+                  {i + 1}
+                </div>
+                <h3 className="mt-3 text-lg font-semibold text-gray-900">
+                  {step.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services */}
+      <section className="bg-gray-50 py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-wider text-emerald-600">
+              Our Services
+            </p>
+            <h2 className="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
+              Three industries, one platform
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-gray-600">
+              Whether you need your pool sparkling, your lawn pristine, or your
+              home spotless — Curb connects you with the best.
+            </p>
+          </div>
+          <div className="mt-16 grid gap-8 sm:grid-cols-3">
+            {services.map((service) => (
+              <div
+                key={service.title}
+                className={`group rounded-2xl border border-gray-200 bg-white p-8 transition-all duration-300 hover:shadow-xl ${service.borderColor}`}
+              >
+                <div
+                  className={`inline-flex h-14 w-14 items-center justify-center rounded-xl transition-colors ${service.color}`}
+                >
+                  <service.icon className="h-7 w-7" />
+                </div>
+                <h3 className="mt-5 text-xl font-semibold text-gray-900">
+                  {service.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                  {service.description}
+                </p>
+                <ul className="mt-4 space-y-2">
+                  {service.features.map((f) => (
+                    <li
+                      key={f}
+                      className="flex items-center gap-2 text-sm text-gray-700"
+                    >
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href="/explore"
+                  className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-emerald-600 hover:text-emerald-700"
+                >
+                  Browse Pros
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Curb */}
+      <section className="bg-white py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-wider text-emerald-600">
+              Why Curb
+            </p>
+            <h2 className="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
+              Built for the way you live
+            </h2>
+          </div>
+          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {perks.map((perk) => (
+              <div
+                key={perk.title}
+                className="flex gap-4 rounded-xl border border-gray-100 p-6 transition-all hover:border-emerald-100 hover:bg-emerald-50/30"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
+                  <perk.icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">{perk.title}</h3>
+                  <p className="mt-1 text-sm text-gray-600">
+                    {perk.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="bg-gray-50 py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-wider text-emerald-600">
+              Testimonials
+            </p>
+            <h2 className="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
+              Loved by homeowners and pros
+            </h2>
+          </div>
+          <div className="mt-16 grid gap-8 sm:grid-cols-3">
+            {testimonials.map((t) => (
+              <div
+                key={t.name}
+                className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm"
+              >
+                <div className="flex gap-1">
+                  {Array.from({ length: t.rating }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className="h-4 w-4 fill-amber-400 text-amber-400"
+                    />
+                  ))}
+                </div>
+                <p className="mt-4 text-sm leading-relaxed text-gray-700">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-semibold text-emerald-700">
+                    {t.avatar}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">
+                      {t.name}
+                    </p>
+                    <p className="text-xs text-gray-500">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contractor CTA */}
+      <section className="relative overflow-hidden bg-emerald-900 py-24">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-emerald-400 blur-[200px]" />
+          <div className="absolute bottom-0 right-0 h-64 w-64 rounded-full bg-teal-400 blur-[150px]" />
+        </div>
+        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <p className="text-sm font-semibold uppercase tracking-wider text-emerald-300">
+            For Contractors
+          </p>
+          <h2 className="mt-3 text-3xl font-bold text-white sm:text-5xl">
+            Grow your business with Curb
+          </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-emerald-200">
+            Fill your empty slots, pick up new recurring clients, and manage your
+            entire operation from one dashboard. No more missed calls.
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            {[
+              { metric: "40%", label: "Average revenue increase" },
+              { metric: "12", label: "New clients per month" },
+              { metric: "< 2 min", label: "Average response time" },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="rounded-xl border border-emerald-700/50 bg-emerald-800/50 p-6 backdrop-blur"
+              >
+                <p className="text-2xl font-bold text-white">{item.metric}</p>
+                <p className="mt-1 text-sm text-emerald-300">{item.label}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10">
+            <Link href="/signup?role=contractor">
+              <Button
+                size="lg"
+                className="bg-white px-10 text-emerald-800 shadow-xl shadow-emerald-900/50 hover:bg-emerald-50"
+              >
+                Start Free Trial
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="bg-white py-24">
+        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+            Ready to get started?
+          </h2>
+          <p className="mt-4 text-lg text-gray-600">
+            Join thousands of homeowners and service pros already on Curb.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link href="/signup">
+              <Button size="lg" className="px-10 shadow-lg shadow-emerald-500/20">
+                Create Free Account
+              </Button>
+            </Link>
+            <Link href="/explore">
+              <Button size="lg" variant="secondary">
+                Browse the Map
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-200 bg-gray-50">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600">
+                <MapPin className="h-4 w-4 text-white" />
+              </div>
+              <span className="text-lg font-bold text-gray-900">Curb</span>
+            </div>
+            <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+              <Link href="/explore" className="hover:text-gray-900">
+                Explore
+              </Link>
+              <Link
+                href="/signup?role=contractor"
+                className="hover:text-gray-900"
+              >
+                For Contractors
+              </Link>
+              <Link href="/login" className="hover:text-gray-900">
+                Log In
+              </Link>
+            </div>
+            <p className="text-sm text-gray-400">
+              Built by Crafted Systems
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
