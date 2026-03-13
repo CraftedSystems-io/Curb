@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { getCurrentPosition } from "@/lib/capacitor/native-geolocation";
 
 interface GeoPosition {
   lat: number;
@@ -14,30 +15,29 @@ interface UseGeolocationReturn {
   requestLocation: () => void;
 }
 
+/**
+ * Hook for getting the user's current location.
+ * Automatically uses native GPS (CLLocationManager) when running in Capacitor,
+ * falls back to browser geolocation API on web.
+ */
 export function useGeolocation(): UseGeolocationReturn {
   const [position, setPosition] = useState<GeoPosition | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   const requestLocation = useCallback(() => {
-    if (!navigator.geolocation) {
-      setError("Geolocation is not supported");
-      setLoading(false);
-      return;
-    }
-
     setLoading(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+    setError(null);
+
+    getCurrentPosition()
+      .then((pos) => {
+        setPosition(pos);
         setLoading(false);
-      },
-      (err) => {
-        setError(err.message);
+      })
+      .catch((err) => {
+        setError(err.message || "Failed to get location");
         setLoading(false);
-      },
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 600000 }
-    );
+      });
   }, []);
 
   useEffect(() => {

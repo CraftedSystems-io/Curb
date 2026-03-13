@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { Heart } from "lucide-react";
 import { clsx } from "clsx";
 import { toggleFavorite } from "@/lib/actions/favorites";
+import { hapticFeedback } from "@/lib/capacitor/haptics";
 
 interface FavoriteButtonProps {
   contractorId: string;
@@ -37,6 +38,9 @@ export function FavoriteButton({
     // Optimistic update
     const newState = !favorited;
     setFavorited(newState);
+
+    // Native haptic feedback (no-op on web)
+    hapticFeedback("medium");
 
     // Trigger pop animation
     setAnimating(true);

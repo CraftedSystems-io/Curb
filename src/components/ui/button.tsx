@@ -1,4 +1,5 @@
 import { forwardRef, type ButtonHTMLAttributes } from "react";
+import { twMerge } from "tailwind-merge";
 import { clsx } from "clsx";
 
 const variants = {
@@ -10,6 +11,10 @@ const variants = {
     "bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500",
   ghost:
     "text-gray-700 hover:bg-gray-100 focus-visible:ring-emerald-500",
+  white:
+    "bg-white text-emerald-800 hover:bg-emerald-50 focus-visible:ring-emerald-500 shadow-lg",
+  "white-outline":
+    "bg-transparent text-white border border-white/30 hover:bg-white/10 focus-visible:ring-white",
 };
 
 const sizes = {
@@ -40,10 +45,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        className={clsx(
-          "inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-          variants[variant],
-          sizes[size],
+        className={twMerge(
+          clsx(
+            "inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+            variants[variant],
+            sizes[size]
+          ),
           className
         )}
         disabled={disabled || loading}

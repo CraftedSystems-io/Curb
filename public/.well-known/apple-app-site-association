@@ -1,0 +1,19 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "287LMVY6W6.com.craftedcompany.curb",
+        "paths": [
+          "/explore/*",
+          "/pro/*",
+          "/contractor/*",
+          "/book/*",
+          "/dashboard/*",
+          "/favorites",
+          "/settings"
+        ]
+      }
+    ]
+  }
+}

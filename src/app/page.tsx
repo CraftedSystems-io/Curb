@@ -16,6 +16,9 @@ import {
   TrendingUp,
   MessageCircle,
   ChevronRight,
+  DollarSign,
+  MapPinned,
+  BellRing,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
@@ -148,15 +151,15 @@ export default function HomePage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-emerald-100 hover:bg-white/10 hover:text-white"
+                className="text-white/90 hover:bg-white/10 hover:text-white"
               >
                 Log in
               </Button>
             </Link>
             <Link href="/signup">
               <Button
+                variant="white"
                 size="sm"
-                className="bg-white text-emerald-800 hover:bg-emerald-50"
               >
                 Get Started
               </Button>
@@ -199,8 +202,9 @@ export default function HomePage() {
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link href="/explore">
                 <Button
+                  variant="white"
                   size="lg"
-                  className="group bg-white px-8 text-emerald-800 shadow-xl shadow-emerald-900/30 hover:bg-emerald-50"
+                  className="group px-8 shadow-xl shadow-emerald-900/30"
                 >
                   Find a Pro Near Me
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -209,8 +213,7 @@ export default function HomePage() {
               <Link href="/signup?role=contractor">
                 <Button
                   size="lg"
-                  variant="ghost"
-                  className="border border-emerald-400/30 text-white hover:bg-white/10"
+                  variant="white-outline"
                 >
                   Join as a Contractor
                 </Button>
@@ -246,8 +249,81 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Two-Audience Value Prop — Immediately shows what Curb does for BOTH sides */}
+      <section className="bg-white py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-2">
+            {/* For Homeowners */}
+            <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-8 transition-all hover:shadow-xl sm:p-10">
+              <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-emerald-100/50 blur-2xl transition-all group-hover:bg-emerald-200/60" />
+              <div className="relative">
+                <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-700">
+                  <MapPinned className="h-3.5 w-3.5" />
+                  For Homeowners
+                </div>
+                <h3 className="mt-5 text-2xl font-bold text-gray-900 sm:text-3xl">
+                  Book a pro in under 60 seconds
+                </h3>
+                <p className="mt-3 text-gray-600 leading-relaxed">
+                  No more calling around or waiting for callbacks. Open the map, see who&apos;s nearby, pick a service, and book — all from your phone.
+                </p>
+                <ul className="mt-6 space-y-3">
+                  {["Live map of pros near you", "Transparent prices upfront", "In-app messaging & tracking", "Verified reviews you can trust"].map((item) => (
+                    <li key={item} className="flex items-center gap-3 text-sm text-gray-700">
+                      <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-8">
+                  <Link href="/explore">
+                    <Button variant="primary" className="group/btn">
+                      Browse Pros Near Me
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* For Contractors */}
+            <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-br from-amber-50 to-orange-50 p-8 transition-all hover:shadow-xl sm:p-10">
+              <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-amber-100/50 blur-2xl transition-all group-hover:bg-amber-200/60" />
+              <div className="relative">
+                <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-amber-700">
+                  <DollarSign className="h-3.5 w-3.5" />
+                  For Contractors
+                </div>
+                <h3 className="mt-5 text-2xl font-bold text-gray-900 sm:text-3xl">
+                  Fill your schedule, grow your revenue
+                </h3>
+                <p className="mt-3 text-gray-600 leading-relaxed">
+                  Stop chasing leads. Curb puts you on the map — literally. Nearby homeowners find you, book you, and pay you. All from one dashboard.
+                </p>
+                <ul className="mt-6 space-y-3">
+                  {["Get discovered by nearby clients", "Fill dead time between jobs", "Manage bookings & routes", "Get paid faster, grow faster"].map((item) => (
+                    <li key={item} className="flex items-center gap-3 text-sm text-gray-700">
+                      <CheckCircle2 className="h-4 w-4 shrink-0 text-amber-500" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-8">
+                  <Link href="/signup?role=contractor">
+                    <Button className="bg-amber-500 text-white hover:bg-amber-600 group/btn">
+                      Start Free Trial
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Stats */}
-      <section className="border-b border-gray-100 bg-white py-12">
+      <section className="border-y border-gray-100 bg-gray-50 py-12">
         <div className="mx-auto grid max-w-5xl grid-cols-2 gap-8 px-4 sm:grid-cols-4 sm:px-6">
           {[
             { value: 2500, suffix: "+", label: "Active Contractors" },
@@ -476,8 +552,9 @@ export default function HomePage() {
           <div className="mt-10">
             <Link href="/signup?role=contractor">
               <Button
+                variant="white"
                 size="lg"
-                className="bg-white px-10 text-emerald-800 shadow-xl shadow-emerald-900/50 hover:bg-emerald-50"
+                className="px-10 shadow-xl shadow-emerald-900/50"
               >
                 Start Free Trial
                 <ArrowRight className="ml-2 h-4 w-4" />

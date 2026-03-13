@@ -1,6 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/layout/sidebar";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { PushInit } from "@/components/capacitor/push-init";
 
 export default function ContractorLayout({
   children,
@@ -9,6 +10,7 @@ export default function ContractorLayout({
 }) {
   return (
     <div className="flex min-h-screen flex-col">
+      <PushInit />
       <Header />
       <div className="flex flex-1">
         <Sidebar />

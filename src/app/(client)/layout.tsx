@@ -1,5 +1,6 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { PushInit } from "@/components/capacitor/push-init";
 
 export default function ClientLayout({
   children,
@@ -8,6 +9,7 @@ export default function ClientLayout({
 }) {
   return (
     <div className="flex min-h-screen flex-col">
+      <PushInit />
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
