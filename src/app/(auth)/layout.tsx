@@ -17,6 +17,15 @@ export default function AuthLayout({
       <div className="w-full max-w-md">
         {children}
       </div>
+      <div className="mt-8 flex items-center gap-4 text-xs text-gray-400">
+        <Link href="/privacy" className="hover:text-gray-600 transition-colors">
+          Privacy Policy
+        </Link>
+        <span>&middot;</span>
+        <Link href="/terms" className="hover:text-gray-600 transition-colors">
+          Terms of Service
+        </Link>
+      </div>
     </div>
   );
 }

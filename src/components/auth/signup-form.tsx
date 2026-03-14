@@ -65,6 +65,23 @@ export function SignupForm() {
             minLength={6}
             required
           />
+          <p className="text-xs text-center text-gray-500">
+            By signing up, you agree to our{" "}
+            <Link
+              href="/terms"
+              className="text-emerald-600 hover:text-emerald-700 underline"
+            >
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link
+              href="/privacy"
+              className="text-emerald-600 hover:text-emerald-700 underline"
+            >
+              Privacy Policy
+            </Link>
+            .
+          </p>
           <Button type="submit" className="w-full" loading={loading}>
             {role === "contractor"
               ? "Join as Contractor"

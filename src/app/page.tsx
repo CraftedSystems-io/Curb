@@ -21,7 +21,7 @@ import {
   BellRing,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AnimatedCounter } from "@/components/ui/animated-counter";
+// AnimatedCounter removed — no fake stats
 
 const services = [
   {
@@ -107,30 +107,18 @@ const perks = [
   },
 ];
 
-const testimonials = [
+const earlyAccessPerks = [
   {
-    name: "Sarah M.",
-    role: "Homeowner",
-    quote:
-      "I found a pool cleaner 10 minutes after downloading. He was at my house the same day. This app is a game changer.",
-    rating: 5,
-    avatar: "SM",
+    title: "Be First in Your Area",
+    description: "Early adopters get priority placement and visibility as the platform grows in their neighborhood.",
   },
   {
-    name: "Carlos R.",
-    role: "Landscaping Pro",
-    quote:
-      "Curb fills my empty slots between jobs. I've picked up 12 new recurring clients in 3 months. My revenue is up 40%.",
-    rating: 5,
-    avatar: "CR",
+    title: "Shape the Product",
+    description: "Your feedback directly influences what we build next. Join our community of founding members.",
   },
   {
-    name: "Jessica T.",
-    role: "Property Manager",
-    quote:
-      "Managing cleaning for 15 units used to be a nightmare. Now I book everything through Curb in minutes.",
-    rating: 5,
-    avatar: "JT",
+    title: "Lock in Free Access",
+    description: "Sign up now and get free access to all features during our launch period. No credit card required.",
   },
 ];
 
@@ -322,28 +310,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats */}
+      {/* Platform Highlights */}
       <section className="border-y border-gray-100 bg-gray-50 py-12">
         <div className="mx-auto grid max-w-5xl grid-cols-2 gap-8 px-4 sm:grid-cols-4 sm:px-6">
           {[
-            { value: 2500, suffix: "+", label: "Active Contractors" },
-            { value: 15000, suffix: "+", label: "Jobs Completed" },
-            { value: 4.9, suffix: "", label: "Avg Rating", isDecimal: true },
-            { value: 98, suffix: "%", label: "Client Satisfaction" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <p className="text-3xl font-bold text-gray-900 sm:text-4xl">
-                {stat.isDecimal ? (
-                  "4.9"
-                ) : (
-                  <AnimatedCounter
-                    end={stat.value}
-                    suffix={stat.suffix}
-                    duration={2200}
-                  />
-                )}
-              </p>
-              <p className="mt-1 text-sm text-gray-500">{stat.label}</p>
+            { icon: "🗺️", label: "Live Map Discovery" },
+            { icon: "⚡", label: "Instant Booking" },
+            { icon: "💬", label: "In-App Messaging" },
+            { icon: "⭐", label: "Verified Reviews" },
+          ].map((item) => (
+            <div key={item.label} className="text-center">
+              <p className="text-3xl sm:text-4xl">{item.icon}</p>
+              <p className="mt-2 text-sm font-medium text-gray-700">{item.label}</p>
             </div>
           ))}
         </div>
@@ -472,45 +450,32 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Early Access */}
       <section className="bg-gray-50 py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <p className="text-sm font-semibold uppercase tracking-wider text-emerald-600">
-              Testimonials
+              Now Launching
             </p>
             <h2 className="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
-              Loved by homeowners and pros
+              Get in early
             </h2>
+            <p className="mx-auto mt-4 max-w-xl text-gray-600">
+              Curb is launching now. Be among the first homeowners and service professionals to join the platform in your area.
+            </p>
           </div>
           <div className="mt-16 grid gap-8 sm:grid-cols-3">
-            {testimonials.map((t) => (
+            {earlyAccessPerks.map((perk) => (
               <div
-                key={t.name}
+                key={perk.title}
                 className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm"
               >
-                <div className="flex gap-1">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className="h-4 w-4 fill-amber-400 text-amber-400"
-                    />
-                  ))}
-                </div>
-                <p className="mt-4 text-sm leading-relaxed text-gray-700">
-                  &ldquo;{t.quote}&rdquo;
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {perk.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-gray-600">
+                  {perk.description}
                 </p>
-                <div className="mt-6 flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-semibold text-emerald-700">
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {t.name}
-                    </p>
-                    <p className="text-xs text-gray-500">{t.role}</p>
-                  </div>
-                </div>
               </div>
             ))}
           </div>
@@ -531,20 +496,20 @@ export default function HomePage() {
             Grow your business with Curb
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-emerald-200">
-            Fill your empty slots, pick up new recurring clients, and manage your
+            Fill your empty time slots, pick up new recurring clients, and manage your
             entire operation from one dashboard. No more missed calls.
           </p>
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
             {[
-              { metric: "40%", label: "Average revenue increase" },
-              { metric: "12", label: "New clients per month" },
-              { metric: "< 2 min", label: "Average response time" },
+              { metric: "📍", label: "Appear on the live map" },
+              { metric: "📅", label: "Manage your schedule" },
+              { metric: "💼", label: "Grow your client base" },
             ].map((item) => (
               <div
                 key={item.label}
                 className="rounded-xl border border-emerald-700/50 bg-emerald-800/50 p-6 backdrop-blur"
               >
-                <p className="text-2xl font-bold text-white">{item.metric}</p>
+                <p className="text-2xl">{item.metric}</p>
                 <p className="mt-1 text-sm text-emerald-300">{item.label}</p>
               </div>
             ))}
@@ -571,7 +536,7 @@ export default function HomePage() {
             Ready to get started?
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            Join thousands of homeowners and service pros already on Curb.
+            Join homeowners and service pros discovering a better way to connect.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link href="/signup">
@@ -610,6 +575,12 @@ export default function HomePage() {
               </Link>
               <Link href="/login" className="hover:text-gray-900">
                 Log In
+              </Link>
+              <Link href="/privacy" className="hover:text-gray-900">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="hover:text-gray-900">
+                Terms of Service
               </Link>
             </div>
             <p className="text-sm text-gray-400">
