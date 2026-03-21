@@ -13,12 +13,14 @@ import {
   Loader2,
   Camera,
   CheckCircle,
+  AlertTriangle,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useUser } from "@/hooks/use-user";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
+import { Dialog } from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 export default function SettingsPage() {
@@ -29,6 +31,9 @@ export default function SettingsPage() {
   const [phone, setPhone] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   // Notification preferences (client-side only for now)
   const [emailNotifications, setEmailNotifications] = useState(true);
@@ -48,6 +53,29 @@ export default function SettingsPage() {
       router.push("/login");
     }
   }, [user, loading, router]);
+
+  async function handleDeleteAccount() {
+    if (deleteConfirmText !== "DELETE") return;
+    setDeleting(true);
+
+    try {
+      const res = await fetch("/api/account/delete", { method: "POST" });
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.error || "Failed to delete account");
+        setDeleting(false);
+        return;
+      }
+
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      router.push("/login");
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+      setDeleting(false);
+    }
+  }
 
   async function handleSave() {
     if (!user) return;
@@ -327,12 +355,80 @@ export default function SettingsPage() {
                 Permanently delete your account and all data
               </p>
             </div>
-            <Button variant="danger" size="sm">
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={() => setShowDeleteDialog(true)}
+            >
               Delete Account
             </Button>
           </div>
         </CardContent>
       </Card>
+
+      {/* Delete Account Confirmation Dialog */}
+      <Dialog
+        open={showDeleteDialog}
+        onClose={() => {
+          setShowDeleteDialog(false);
+          setDeleteConfirmText("");
+        }}
+        title="Delete Account"
+      >
+        <div className="space-y-4">
+          <div className="flex items-start gap-3 rounded-lg bg-red-50 p-3">
+            <AlertTriangle size={20} className="mt-0.5 shrink-0 text-red-600" />
+            <div className="text-sm text-red-800">
+              <p className="font-medium">This action is permanent and cannot be undone.</p>
+              <p className="mt-1">
+                All your data will be permanently deleted, including your
+                profile, bookings, reviews, and messages.
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-gray-700">
+              Type <span className="font-bold text-red-600">DELETE</span> to confirm
+            </label>
+            <input
+              type="text"
+              value={deleteConfirmText}
+              onChange={(e) => setDeleteConfirmText(e.target.value)}
+              placeholder="DELETE"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm text-gray-900 outline-none transition-all focus:border-red-400 focus:ring-2 focus:ring-red-100"
+            />
+          </div>
+
+          <div className="flex justify-end gap-3 border-t border-gray-100 pt-4">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                setShowDeleteDialog(false);
+                setDeleteConfirmText("");
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="danger"
+              size="sm"
+              disabled={deleteConfirmText !== "DELETE" || deleting}
+              onClick={handleDeleteAccount}
+            >
+              {deleting ? (
+                <>
+                  <Loader2 size={14} className="mr-1.5 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Permanently Delete"
+              )}
+            </Button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }
