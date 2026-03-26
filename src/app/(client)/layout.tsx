@@ -1,6 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { PushInit } from "@/components/capacitor/push-init";
+import { PushInit } from "@/components/pwa/push-init";
+import { InstallPrompt } from "@/components/pwa/install-prompt";
 
 export default function ClientLayout({
   children,
@@ -13,6 +14,7 @@ export default function ClientLayout({
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
+      <InstallPrompt />
     </div>
   );
 }

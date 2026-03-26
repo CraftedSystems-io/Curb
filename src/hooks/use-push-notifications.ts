@@ -2,12 +2,10 @@
 
 import { useEffect } from "react";
 import { useUser } from "./use-user";
-import { registerPushNotifications } from "@/lib/capacitor/push-notifications";
+import { registerPushNotifications } from "@/lib/notifications";
 
 /**
- * Hook that registers for push notifications after user login.
- * Call this in authenticated layout components.
- * No-op on web — only activates inside the native Capacitor shell.
+ * Hook that registers for Web Push notifications after user login.
  */
 export function usePushNotifications() {
   const { user } = useUser();

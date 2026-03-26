@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { getCurrentPosition } from "@/lib/capacitor/native-geolocation";
+import { getCurrentPosition } from "@/lib/geolocation";
 
 interface GeoPosition {
   lat: number;
@@ -16,9 +16,7 @@ interface UseGeolocationReturn {
 }
 
 /**
- * Hook for getting the user's current location.
- * Automatically uses native GPS (CLLocationManager) when running in Capacitor,
- * falls back to browser geolocation API on web.
+ * Hook for getting the user's current location via the browser Geolocation API.
  */
 export function useGeolocation(): UseGeolocationReturn {
   const [position, setPosition] = useState<GeoPosition | null>(null);

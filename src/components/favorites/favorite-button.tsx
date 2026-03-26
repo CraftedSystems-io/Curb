@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { Heart } from "lucide-react";
 import { clsx } from "clsx";
 import { toggleFavorite } from "@/lib/actions/favorites";
-import { hapticFeedback } from "@/lib/capacitor/haptics";
+import { hapticFeedback } from "@/lib/haptics";
 
 interface FavoriteButtonProps {
   contractorId: string;

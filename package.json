@@ -1,30 +1,15 @@
 {
   "name": "curb",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "Curb - Find Trusted Service Pros",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "cap:sync": "cap sync ios",
-    "cap:open": "cap open ios",
-    "cap:build": "cap sync ios && cap open ios"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@capacitor/app": "^8.0.1",
-    "@capacitor/browser": "^8.0.2",
-    "@capacitor/camera": "^8.0.2",
-    "@capacitor/cli": "^8.2.0",
-    "@capacitor/core": "^8.2.0",
-    "@capacitor/geolocation": "^8.1.0",
-    "@capacitor/haptics": "^8.0.1",
-    "@capacitor/ios": "^8.2.0",
-    "@capacitor/keyboard": "^8.0.1",
-    "@capacitor/push-notifications": "^8.0.2",
-    "@capacitor/splash-screen": "^8.0.1",
-    "@capacitor/status-bar": "^8.0.1",
     "@googlemaps/markerclusterer": "^2.6.2",
     "@hookform/resolvers": "^5.2.2",
     "@supabase/ssr": "^0.9.0",

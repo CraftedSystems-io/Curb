@@ -1,7 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/layout/sidebar";
 import { MobileNav } from "@/components/layout/mobile-nav";
-import { PushInit } from "@/components/capacitor/push-init";
+import { PushInit } from "@/components/pwa/push-init";
 
 export default function ContractorLayout({
   children,
