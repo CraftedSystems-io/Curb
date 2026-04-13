@@ -2,6 +2,7 @@ import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/layout/sidebar";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { PushInit } from "@/components/pwa/push-init";
+import { BillingGuard } from "@/components/layout/billing-guard";
 
 export default function ContractorLayout({
   children,
@@ -15,7 +16,7 @@ export default function ContractorLayout({
       <div className="flex flex-1">
         <Sidebar />
         <main className="flex-1 bg-gray-50 p-4 pb-20 sm:p-6 lg:p-8 lg:pb-8">
-          {children}
+          <BillingGuard>{children}</BillingGuard>
         </main>
       </div>
       <MobileNav />

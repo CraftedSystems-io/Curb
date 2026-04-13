@@ -11,6 +11,7 @@ import {
   Star,
   Camera,
   BarChart3,
+  CreditCard,
 } from "lucide-react";
 import { clsx } from "clsx";
 
@@ -23,6 +24,7 @@ const navItems = [
   { href: "/pro/reviews", label: "Reviews", icon: Star },
   { href: "/pro/portfolio", label: "Portfolio", icon: Camera },
   { href: "/pro/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/pro/billing", label: "Billing", icon: CreditCard },
 ];
 
 export function Sidebar() {

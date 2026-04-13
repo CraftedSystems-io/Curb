@@ -1,4 +1,4 @@
-export type UserRole = "client" | "contractor";
+export type UserRole = "client" | "contractor" | "admin";
 export type ServiceCategory = "pool" | "landscaping" | "maid";
 export type BookingStatus =
   | "pending"
@@ -7,6 +7,8 @@ export type BookingStatus =
   | "in_progress"
   | "completed"
   | "cancelled";
+export type SubscriptionPlan = "starter" | "professional" | "enterprise";
+export type SubscriptionStatus = "trialing" | "active" | "past_due" | "canceled";
 
 export interface Profile {
   id: string;
@@ -33,6 +35,12 @@ export interface Contractor {
   base_location: unknown;
   service_radius_m: number;
   service_area: unknown;
+  subscription_plan: SubscriptionPlan;
+  subscription_status: SubscriptionStatus;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+  trial_ends_at: string | null;
+  current_period_end: string | null;
   created_at: string;
   updated_at: string;
 }

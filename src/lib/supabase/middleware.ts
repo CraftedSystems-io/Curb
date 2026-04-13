@@ -4,6 +4,14 @@ import { NextResponse, type NextRequest } from "next/server";
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
+  const path = request.nextUrl.pathname;
+
+  // Public paths — skip auth entirely
+  const publicPaths = ["/", "/pricing", "/privacy", "/terms", "/api/webhooks"];
+  if (publicPaths.some((p) => path === p || path.startsWith(p + "/"))) {
+    return supabaseResponse;
+  }
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -29,8 +37,6 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const path = request.nextUrl.pathname;
-
   // Auth pages — redirect logged-in users away
   if (user && (path.startsWith("/login") || path.startsWith("/signup"))) {
     // Fetch role to redirect to correct dashboard
@@ -48,6 +54,28 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = dashboardPath;
     return NextResponse.redirect(url);
+  }
+
+  // Admin routes — must be admin role
+  if (path.startsWith("/admin")) {
+    if (!user) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      url.searchParams.set("redirect", path);
+      return NextResponse.redirect(url);
+    }
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    if (profile?.role !== "admin") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
   }
 
   // Protected routes — redirect unauthenticated users to login

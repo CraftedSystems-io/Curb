@@ -1,32 +1,36 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { Check, Zap, Crown, Building2, ArrowRight, MapPin } from "lucide-react";
 
 const plans = [
   {
+    key: "starter" as const,
     name: "Starter",
     price: "Free",
     period: "",
     description: "Perfect for getting started",
     icon: Zap,
-    color: "emerald",
     features: [
       "Create your contractor profile",
       "Get discovered by nearby clients",
       "Accept up to 10 bookings/month",
       "Basic messaging",
-      "Client reviews & ratings",
+      "Client reviews and ratings",
     ],
     cta: "Get Started",
     href: "/signup?role=contractor",
     popular: false,
+    priceId: null,
   },
   {
+    key: "professional" as const,
     name: "Professional",
     price: "$29",
     period: "/month",
     description: "For growing service businesses",
     icon: Crown,
-    color: "emerald",
     features: [
       "Everything in Starter",
       "Unlimited bookings",
@@ -38,16 +42,17 @@ const plans = [
       "Custom service pricing",
     ],
     cta: "Start Free Trial",
-    href: "/signup?role=contractor",
+    href: null,
     popular: true,
+    priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID,
   },
   {
+    key: "enterprise" as const,
     name: "Enterprise",
     price: "$79",
     period: "/month",
     description: "For teams and larger operations",
     icon: Building2,
-    color: "gray",
     features: [
       "Everything in Professional",
       "Multiple team members",
@@ -55,30 +60,91 @@ const plans = [
       "Custom branding",
       "API access",
       "Priority support",
-      "White-label options",
+      "White label options",
       "Dedicated account manager",
     ],
-    cta: "Contact Sales",
-    href: "/signup?role=contractor",
+    cta: "Start Free Trial",
+    href: null,
     popular: false,
+    priceId: process.env.NEXT_PUBLIC_STRIPE_ENTERPRISE_PRICE_ID,
   },
 ];
 
 export default function PricingPage() {
+  const [loading, setLoading] = useState<string | null>(null);
+
+  async function handleSubscribe(priceId: string, key: string) {
+    setLoading(key);
+    try {
+      const res = await fetch("/api/billing", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "checkout", priceId }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        // Not logged in as contractor, redirect to signup
+        window.location.href = "/signup?role=contractor";
+      }
+    } catch {
+      window.location.href = "/signup?role=contractor";
+    }
+    setLoading(null);
+  }
+
   return (
-    <div className="bg-white">
+    <div style={{ background: "white", minHeight: "100vh" }}>
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600">
-              <MapPin className="h-5 w-5 text-white" />
+      <header
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 50,
+          borderBottom: "1px solid #e5e7eb",
+          background: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(12px)",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1200,
+            margin: "0 auto",
+            display: "flex",
+            height: 64,
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0 24px",
+          }}
+        >
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 10,
+                background: "#059669",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <MapPin size={20} color="white" />
             </div>
-            <span className="text-xl font-bold text-gray-900">Curb</span>
+            <span style={{ fontSize: 20, fontWeight: 800, color: "#111827" }}>Curb</span>
           </Link>
           <Link
             href="/signup"
-            className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
+            style={{
+              padding: "8px 16px",
+              borderRadius: 8,
+              background: "#059669",
+              color: "white",
+              fontSize: 14,
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
           >
             Get Started
           </Link>
@@ -86,117 +152,177 @@ export default function PricingPage() {
       </header>
 
       {/* Hero */}
-      <section className="px-4 py-16 sm:py-24">
-        <div className="mx-auto max-w-4xl text-center">
-          <span className="inline-flex items-center rounded-full bg-emerald-50 px-4 py-1.5 text-sm font-medium text-emerald-700">
+      <section style={{ padding: "64px 24px 0", textAlign: "center" }}>
+        <div style={{ maxWidth: 700, margin: "0 auto" }}>
+          <span
+            style={{
+              display: "inline-flex",
+              padding: "6px 16px",
+              borderRadius: 999,
+              background: "#ecfdf5",
+              fontSize: 14,
+              fontWeight: 500,
+              color: "#047857",
+            }}
+          >
             Simple pricing, no surprises
           </span>
-          <h1 className="mt-6 text-4xl font-black text-gray-900 sm:text-5xl">
+          <h1 style={{ marginTop: 24, fontSize: 48, fontWeight: 900, color: "#111827", lineHeight: 1.1 }}>
             Grow your business
             <br />
-            <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
-              with the right plan
-            </span>
+            <span className="gradient-text">with the right plan</span>
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
+          <p style={{ margin: "16px auto 0", maxWidth: 560, fontSize: 18, color: "#6b7280", lineHeight: 1.6 }}>
             Start free and scale as your business grows. No hidden fees,
-            no long-term contracts. Cancel anytime.
+            no long term contracts. Cancel anytime.
           </p>
         </div>
       </section>
 
       {/* Plans */}
-      <section className="mx-auto max-w-6xl px-4 pb-24">
-        <div className="grid gap-8 lg:grid-cols-3">
-          {plans.map((plan) => (
-            <div
-              key={plan.name}
-              className={`relative rounded-2xl border ${
-                plan.popular
-                  ? "border-emerald-200 bg-emerald-50/30 shadow-xl shadow-emerald-100/50"
-                  : "border-gray-200 bg-white"
-              } p-8 transition-shadow hover:shadow-lg`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="rounded-full bg-emerald-600 px-4 py-1 text-xs font-bold text-white shadow-sm">
-                    Most Popular
-                  </span>
-                </div>
-              )}
-
-              <div className="flex items-center gap-3">
-                <div
-                  className={`flex h-10 w-10 items-center justify-center rounded-lg ${
-                    plan.popular ? "bg-emerald-600" : "bg-gray-100"
-                  }`}
-                >
-                  <plan.icon
-                    className={`h-5 w-5 ${
-                      plan.popular ? "text-white" : "text-gray-600"
-                    }`}
-                  />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900">
-                  {plan.name}
-                </h3>
-              </div>
-
-              <p className="mt-2 text-sm text-gray-500">{plan.description}</p>
-
-              <div className="mt-6 flex items-baseline gap-1">
-                <span className="text-4xl font-black text-gray-900">
-                  {plan.price}
-                </span>
-                {plan.period && (
-                  <span className="text-sm text-gray-500">{plan.period}</span>
-                )}
-              </div>
-
-              <Link
-                href={plan.href}
-                className={`mt-6 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-all ${
-                  plan.popular
-                    ? "bg-emerald-600 text-white shadow-md hover:bg-emerald-700 hover:shadow-lg"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
+      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 24px 80px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 }}>
+          {plans.map((plan) => {
+            const Icon = plan.icon;
+            return (
+              <div
+                key={plan.key}
+                style={{
+                  position: "relative",
+                  padding: 32,
+                  borderRadius: 20,
+                  border: plan.popular ? "2px solid #059669" : "1px solid #e5e7eb",
+                  background: plan.popular ? "rgba(236, 253, 245, 0.3)" : "white",
+                  boxShadow: plan.popular ? "0 8px 30px -8px rgba(5, 150, 105, 0.15)" : undefined,
+                  transition: "box-shadow 0.2s",
+                }}
               >
-                {plan.cta}
-                <ArrowRight size={14} />
-              </Link>
+                {plan.popular && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: -12,
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      padding: "4px 16px",
+                      borderRadius: 999,
+                      background: "#059669",
+                      color: "white",
+                      fontSize: 12,
+                      fontWeight: 700,
+                    }}
+                  >
+                    Most Popular
+                  </div>
+                )}
 
-              <ul className="mt-8 space-y-3">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3">
-                    <Check
-                      size={16}
-                      className={`mt-0.5 shrink-0 ${
-                        plan.popular ? "text-emerald-600" : "text-gray-400"
-                      }`}
-                    />
-                    <span className="text-sm text-gray-600">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <div
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 10,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      background: plan.popular ? "#059669" : "#f3f4f6",
+                    }}
+                  >
+                    <Icon size={20} color={plan.popular ? "white" : "#4b5563"} />
+                  </div>
+                  <h3 style={{ fontSize: 18, fontWeight: 700, color: "#111827" }}>{plan.name}</h3>
+                </div>
+
+                <p style={{ marginTop: 8, fontSize: 14, color: "#6b7280" }}>{plan.description}</p>
+
+                <div style={{ marginTop: 24, display: "flex", alignItems: "baseline", gap: 4 }}>
+                  <span style={{ fontSize: 40, fontWeight: 900, color: "#111827" }}>{plan.price}</span>
+                  {plan.period && <span style={{ fontSize: 14, color: "#6b7280" }}>{plan.period}</span>}
+                </div>
+
+                {plan.priceId ? (
+                  <button
+                    onClick={() => handleSubscribe(plan.priceId!, plan.key)}
+                    disabled={loading === plan.key}
+                    style={{
+                      marginTop: 24,
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 8,
+                      padding: "14px 0",
+                      borderRadius: 12,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      border: "none",
+                      cursor: "pointer",
+                      background: plan.popular ? "#059669" : "#f3f4f6",
+                      color: plan.popular ? "white" : "#374151",
+                    }}
+                  >
+                    {loading === plan.key ? "Redirecting..." : plan.cta}
+                    {loading !== plan.key && <ArrowRight size={14} />}
+                  </button>
+                ) : (
+                  <Link
+                    href={plan.href!}
+                    style={{
+                      marginTop: 24,
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 8,
+                      padding: "14px 0",
+                      borderRadius: 12,
+                      fontSize: 14,
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      background: "#f3f4f6",
+                      color: "#374151",
+                    }}
+                  >
+                    {plan.cta}
+                    <ArrowRight size={14} />
+                  </Link>
+                )}
+
+                <ul style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 12 }}>
+                  {plan.features.map((feature) => (
+                    <li key={feature} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                      <Check
+                        size={16}
+                        style={{
+                          flexShrink: 0,
+                          marginTop: 2,
+                          color: plan.popular ? "#059669" : "#9ca3af",
+                        }}
+                      />
+                      <span style={{ fontSize: 14, color: "#374151" }}>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
       </section>
 
       {/* Client section */}
-      <section className="border-t border-gray-100 bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900">
+      <section style={{ borderTop: "1px solid #f3f4f6", background: "#f9fafb", padding: "64px 24px" }}>
+        <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 800, color: "#111827" }}>
             For Clients: Always Free
           </h2>
-          <p className="mt-4 text-lg text-gray-500">
+          <p style={{ marginTop: 16, fontSize: 18, color: "#6b7280", lineHeight: 1.6 }}>
             Discovering and booking service pros on Curb is completely free for
             homeowners. No fees, no subscriptions, no catches.
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-6">
+          <div style={{ marginTop: 32, display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16 }}>
             {[
               "Browse unlimited pros",
-              "Real-time messaging",
+              "Real time messaging",
               "Transparent pricing",
               "Verified reviews",
               "Instant booking",
@@ -204,16 +330,36 @@ export default function PricingPage() {
             ].map((item) => (
               <div
                 key={item}
-                className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 shadow-sm"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "8px 16px",
+                  borderRadius: 10,
+                  background: "white",
+                  border: "1px solid #e5e7eb",
+                }}
               >
-                <Check size={14} className="text-emerald-600" />
-                <span className="text-sm text-gray-700">{item}</span>
+                <Check size={14} color="#059669" />
+                <span style={{ fontSize: 14, color: "#374151" }}>{item}</span>
               </div>
             ))}
           </div>
           <Link
             href="/signup?role=client"
-            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:bg-emerald-700 hover:shadow-lg"
+            style={{
+              marginTop: 32,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "14px 28px",
+              borderRadius: 12,
+              background: "#059669",
+              color: "white",
+              fontSize: 14,
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
           >
             Sign Up Free
             <ArrowRight size={14} />
@@ -222,20 +368,20 @@ export default function PricingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="px-4 py-16">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="text-center text-3xl font-bold text-gray-900">
+      <section style={{ padding: "64px 24px" }}>
+        <div style={{ maxWidth: 700, margin: "0 auto" }}>
+          <h2 style={{ textAlign: "center", fontSize: 32, fontWeight: 800, color: "#111827" }}>
             Frequently Asked Questions
           </h2>
-          <div className="mt-10 space-y-6">
+          <div style={{ marginTop: 40, display: "flex", flexDirection: "column", gap: 20 }}>
             {[
               {
                 q: "Can I try the Professional plan for free?",
-                a: "Yes! We offer a 14-day free trial of the Professional plan. No credit card required to start.",
+                a: "Yes! We offer a 14 day free trial of any paid plan. No credit card required to start.",
               },
               {
                 q: "What happens when I reach the Starter plan limit?",
-                a: "You can still receive bookings, but you won't be able to accept new ones until the next month. Upgrade anytime to remove limits.",
+                a: "You can still receive bookings, but you will not be able to accept new ones until the next month. Upgrade anytime to remove limits.",
               },
               {
                 q: "Can I cancel anytime?",
@@ -247,15 +393,19 @@ export default function PricingPage() {
               },
               {
                 q: "How does payment processing work?",
-                a: "We use Stripe for secure payment processing. Funds are deposited directly to your bank account within 2-3 business days.",
+                a: "We use Stripe for secure payment processing. Funds are deposited directly to your bank account within 2 to 3 business days.",
               },
             ].map((faq) => (
               <div
                 key={faq.q}
-                className="rounded-xl border border-gray-200 p-6"
+                style={{
+                  padding: 24,
+                  borderRadius: 14,
+                  border: "1px solid #e5e7eb",
+                }}
               >
-                <h3 className="font-semibold text-gray-900">{faq.q}</h3>
-                <p className="mt-2 text-sm text-gray-500">{faq.a}</p>
+                <h3 style={{ fontSize: 15, fontWeight: 600, color: "#111827" }}>{faq.q}</h3>
+                <p style={{ marginTop: 8, fontSize: 14, color: "#6b7280", lineHeight: 1.6 }}>{faq.a}</p>
               </div>
             ))}
           </div>
@@ -263,18 +413,30 @@ export default function PricingPage() {
       </section>
 
       {/* Footer CTA */}
-      <section className="bg-emerald-600 px-4 py-16">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold text-white">
+      <section style={{ background: "#059669", padding: "64px 24px" }}>
+        <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 800, color: "white" }}>
             Ready to grow your business?
           </h2>
-          <p className="mt-4 text-emerald-100">
-            Join thousands of service professionals already using Curb to find
+          <p style={{ marginTop: 16, fontSize: 16, color: "#a7f3d0", lineHeight: 1.6 }}>
+            Join service professionals already using Curb to find
             clients and manage their business.
           </p>
           <Link
             href="/signup"
-            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-8 py-3.5 text-sm font-bold text-emerald-700 shadow-lg transition-all hover:bg-gray-50 hover:shadow-xl"
+            style={{
+              marginTop: 32,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "14px 32px",
+              borderRadius: 12,
+              background: "white",
+              color: "#065f46",
+              fontSize: 14,
+              fontWeight: 700,
+              textDecoration: "none",
+            }}
           >
             Get Started for Free
             <ArrowRight size={14} />
