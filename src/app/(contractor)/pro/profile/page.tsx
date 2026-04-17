@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/client";
 import { updateContractorProfile } from "@/lib/actions/contractors";
+import DeleteAccountCard from "@/components/account/DeleteAccountCard";
 
 export default function ContractorProfilePage() {
   const [loading, setLoading] = useState(true);
@@ -185,6 +186,9 @@ export default function ContractorProfilePage() {
           </Button>
         </div>
       </form>
+
+      {/* Danger zone — Apple App Store Guideline 5.1.1(v) requires in-app account deletion */}
+      <DeleteAccountCard />
     </div>
   );
 }
