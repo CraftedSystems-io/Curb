@@ -289,11 +289,9 @@ export default function BillingPage() {
 
                 <div style={{ marginTop: 20, display: "flex", alignItems: "baseline", gap: 4 }}>
                   <span style={{ fontSize: 36, fontWeight: 900, color: "#111827" }}>
-                    {plan.price === 0 ? "Free" : `$${plan.price}`}
+                    {`$${plan.price}`}
                   </span>
-                  {plan.price > 0 && (
-                    <span style={{ fontSize: 14, color: "#6b7280" }}>/month</span>
-                  )}
+                  <span style={{ fontSize: 14, color: "#6b7280" }}>/month</span>
                 </div>
 
                 <div style={{ marginTop: 24 }}>
@@ -320,31 +318,17 @@ export default function BillingPage() {
                       <CreditCard size={16} />
                       Manage Subscription
                     </button>
-                  ) : key === "starter" ? (
-                    <div
-                      style={{
-                        width: "100%",
-                        padding: "12px 0",
-                        borderRadius: 10,
-                        fontSize: 14,
-                        fontWeight: 600,
-                        background: "#f9fafb",
-                        color: "#9ca3af",
-                        textAlign: "center",
-                      }}
-                    >
-                      {isCurrent ? "Current Plan" : "Free Forever"}
-                    </div>
                   ) : (
                     <button
-                      onClick={() =>
-                        handleCheckout(
-                          key === "professional"
-                            ? process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID!
-                            : process.env.NEXT_PUBLIC_STRIPE_ENTERPRISE_PRICE_ID!,
-                          key
-                        )
-                      }
+                      onClick={() => {
+                        const priceId =
+                          key === "starter"
+                            ? process.env.NEXT_PUBLIC_STRIPE_STARTER_PRICE_ID!
+                            : key === "professional"
+                              ? process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID!
+                              : process.env.NEXT_PUBLIC_STRIPE_ENTERPRISE_PRICE_ID!;
+                        handleCheckout(priceId, key);
+                      }}
                       disabled={!!actionLoading}
                       style={{
                         width: "100%",

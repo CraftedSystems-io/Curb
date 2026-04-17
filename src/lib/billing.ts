@@ -3,38 +3,42 @@ import type { SubscriptionPlan, SubscriptionStatus } from "@/types/database";
 export const PLANS = {
   starter: {
     name: "Starter",
-    price: 0,
-    bookingsPerMonth: 10,
+    price: 29,
+    bookingsPerMonth: 50,
+    maxTeams: 1,
     features: [
-      "Contractor profile",
-      "Get discovered by nearby clients",
-      "Up to 10 bookings per month",
+      "Contractor profile + map presence",
+      "Up to 50 bookings per month",
+      "1 team",
       "Basic messaging",
       "Client reviews and ratings",
+      "Basic invoicing",
     ],
   },
   professional: {
-    name: "Professional",
-    price: 29,
+    name: "Pro",
+    price: 59,
     bookingsPerMonth: Infinity,
+    maxTeams: 5,
     features: [
       "Everything in Starter",
       "Unlimited bookings",
+      "Up to 5 teams",
       "Priority map placement",
       "Portfolio photo gallery",
-      "Analytics dashboard",
-      "Quick invoicing",
+      "Estimates and quick invoicing",
       "Availability calendar",
-      "Custom service pricing",
+      "Analytics dashboard",
     ],
   },
   enterprise: {
-    name: "Enterprise",
-    price: 79,
+    name: "Max",
+    price: 99,
     bookingsPerMonth: Infinity,
+    maxTeams: Infinity,
     features: [
-      "Everything in Professional",
-      "Multiple team members",
+      "Everything in Pro",
+      "Unlimited teams",
       "Route optimization",
       "Custom branding",
       "API access",
@@ -69,6 +73,14 @@ export function canAcceptBooking(
 ): boolean {
   const limit = PLANS[plan].bookingsPerMonth;
   return currentMonthBookings < limit;
+}
+
+export function canAddTeam(
+  plan: SubscriptionPlan,
+  currentTeamCount: number
+): boolean {
+  const limit = PLANS[plan].maxTeams;
+  return currentTeamCount < limit;
 }
 
 export function getTrialDaysLeft(trialEndsAt: string | null): number {

@@ -25,7 +25,12 @@ export async function createCheckoutSession(
     success_url: `${appUrl}/pro/billing?success=true`,
     cancel_url: `${appUrl}/pro/billing?canceled=true`,
     metadata: { contractorId },
-    subscription_data: { metadata: { contractorId } },
+    subscription_data: {
+      metadata: { contractorId },
+      trial_period_days: 14,
+    },
+    payment_method_collection: "always",
+    allow_promotion_codes: true,
   };
 
   if (customerId) {

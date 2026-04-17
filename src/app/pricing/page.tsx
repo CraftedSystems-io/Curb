@@ -8,63 +8,61 @@ const plans = [
   {
     key: "starter" as const,
     name: "Starter",
-    price: "Free",
-    period: "",
-    description: "Perfect for getting started",
+    price: "$29",
+    period: "/month",
+    description: "For solo contractors getting started",
     icon: Zap,
     features: [
-      "Create your contractor profile",
-      "Get discovered by nearby clients",
-      "Accept up to 10 bookings/month",
+      "Contractor profile + map presence",
+      "Up to 50 bookings per month",
+      "1 team",
       "Basic messaging",
       "Client reviews and ratings",
+      "Basic invoicing",
     ],
-    cta: "Get Started",
-    href: "/signup?role=contractor",
+    cta: "Start 14 Day Free Trial",
     popular: false,
-    priceId: null,
+    priceId: process.env.NEXT_PUBLIC_STRIPE_STARTER_PRICE_ID,
   },
   {
     key: "professional" as const,
-    name: "Professional",
-    price: "$29",
+    name: "Pro",
+    price: "$59",
     period: "/month",
-    description: "For growing service businesses",
+    description: "For growing contractor teams",
     icon: Crown,
     features: [
       "Everything in Starter",
       "Unlimited bookings",
-      "Priority placement on map",
+      "Up to 5 teams",
+      "Priority map placement",
       "Portfolio photo gallery",
-      "Analytics dashboard",
-      "Quick invoicing",
+      "Estimates and quick invoicing",
       "Availability calendar",
-      "Custom service pricing",
+      "Analytics dashboard",
     ],
-    cta: "Start Free Trial",
-    href: null,
+    cta: "Start 14 Day Free Trial",
     popular: true,
     priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID,
   },
   {
     key: "enterprise" as const,
-    name: "Enterprise",
-    price: "$79",
+    name: "Max",
+    price: "$99",
     period: "/month",
-    description: "For teams and larger operations",
+    description: "For established contractor businesses",
     icon: Building2,
     features: [
-      "Everything in Professional",
-      "Multiple team members",
-      "Advanced route optimization",
+      "Everything in Pro",
+      "Unlimited teams",
+      "Route optimization",
       "Custom branding",
       "API access",
       "Priority support",
       "White label options",
       "Dedicated account manager",
     ],
-    cta: "Start Free Trial",
-    href: null,
+    cta: "Start 14 Day Free Trial",
     popular: false,
     priceId: process.env.NEXT_PUBLIC_STRIPE_ENTERPRISE_PRICE_ID,
   },
@@ -85,7 +83,6 @@ export default function PricingPage() {
       if (data.url) {
         window.location.href = data.url;
       } else {
-        // Not logged in as contractor, redirect to signup
         window.location.href = "/signup?role=contractor";
       }
     } catch {
@@ -96,7 +93,6 @@ export default function PricingPage() {
 
   return (
     <div style={{ background: "white", minHeight: "100vh" }}>
-      {/* Header */}
       <header
         style={{
           position: "sticky",
@@ -151,7 +147,6 @@ export default function PricingPage() {
         </div>
       </header>
 
-      {/* Hero */}
       <section style={{ padding: "64px 24px 0", textAlign: "center" }}>
         <div style={{ maxWidth: 700, margin: "0 auto" }}>
           <span
@@ -165,21 +160,20 @@ export default function PricingPage() {
               color: "#047857",
             }}
           >
-            Simple pricing, no surprises
+            14 day free trial on every plan
           </span>
           <h1 style={{ marginTop: 24, fontSize: 48, fontWeight: 900, color: "#111827", lineHeight: 1.1 }}>
-            Grow your business
+            Find more jobs,
             <br />
-            <span className="gradient-text">with the right plan</span>
+            <span className="gradient-text">get paid faster</span>
           </h1>
           <p style={{ margin: "16px auto 0", maxWidth: 560, fontSize: 18, color: "#6b7280", lineHeight: 1.6 }}>
-            Start free and scale as your business grows. No hidden fees,
-            no long term contracts. Cancel anytime.
+            Contractors set their service area, show up on the map, and close more jobs.
+            Start your 14 day free trial. Cancel anytime.
           </p>
         </div>
       </section>
 
-      {/* Plans */}
       <section style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 24px 80px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 }}>
           {plans.map((plan) => {
@@ -237,56 +231,33 @@ export default function PricingPage() {
 
                 <div style={{ marginTop: 24, display: "flex", alignItems: "baseline", gap: 4 }}>
                   <span style={{ fontSize: 40, fontWeight: 900, color: "#111827" }}>{plan.price}</span>
-                  {plan.period && <span style={{ fontSize: 14, color: "#6b7280" }}>{plan.period}</span>}
+                  <span style={{ fontSize: 14, color: "#6b7280" }}>{plan.period}</span>
                 </div>
 
-                {plan.priceId ? (
-                  <button
-                    onClick={() => handleSubscribe(plan.priceId!, plan.key)}
-                    disabled={loading === plan.key}
-                    style={{
-                      marginTop: 24,
-                      width: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 8,
-                      padding: "14px 0",
-                      borderRadius: 12,
-                      fontSize: 14,
-                      fontWeight: 600,
-                      border: "none",
-                      cursor: "pointer",
-                      background: plan.popular ? "#059669" : "#f3f4f6",
-                      color: plan.popular ? "white" : "#374151",
-                    }}
-                  >
-                    {loading === plan.key ? "Redirecting..." : plan.cta}
-                    {loading !== plan.key && <ArrowRight size={14} />}
-                  </button>
-                ) : (
-                  <Link
-                    href={plan.href!}
-                    style={{
-                      marginTop: 24,
-                      width: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 8,
-                      padding: "14px 0",
-                      borderRadius: 12,
-                      fontSize: 14,
-                      fontWeight: 600,
-                      textDecoration: "none",
-                      background: "#f3f4f6",
-                      color: "#374151",
-                    }}
-                  >
-                    {plan.cta}
-                    <ArrowRight size={14} />
-                  </Link>
-                )}
+                <button
+                  onClick={() => plan.priceId && handleSubscribe(plan.priceId, plan.key)}
+                  disabled={loading === plan.key || !plan.priceId}
+                  style={{
+                    marginTop: 24,
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 8,
+                    padding: "14px 0",
+                    borderRadius: 12,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    border: "none",
+                    cursor: plan.priceId ? "pointer" : "not-allowed",
+                    background: plan.popular ? "#059669" : "#f3f4f6",
+                    color: plan.popular ? "white" : "#374151",
+                    opacity: plan.priceId ? 1 : 0.5,
+                  }}
+                >
+                  {loading === plan.key ? "Redirecting..." : plan.cta}
+                  {loading !== plan.key && <ArrowRight size={14} />}
+                </button>
 
                 <ul style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 12 }}>
                   {plan.features.map((feature) => (
@@ -309,14 +280,13 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Client section */}
       <section style={{ borderTop: "1px solid #f3f4f6", background: "#f9fafb", padding: "64px 24px" }}>
         <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: 32, fontWeight: 800, color: "#111827" }}>
-            For Clients: Always Free
+            For Homeowners: Always Free
           </h2>
           <p style={{ marginTop: 16, fontSize: 18, color: "#6b7280", lineHeight: 1.6 }}>
-            Discovering and booking service pros on Curb is completely free for
+            Finding and booking trusted service pros on Curb is completely free for
             homeowners. No fees, no subscriptions, no catches.
           </p>
           <div style={{ marginTop: 32, display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16 }}>
@@ -367,7 +337,6 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* FAQ */}
       <section style={{ padding: "64px 24px" }}>
         <div style={{ maxWidth: 700, margin: "0 auto" }}>
           <h2 style={{ textAlign: "center", fontSize: 32, fontWeight: 800, color: "#111827" }}>
@@ -376,20 +345,20 @@ export default function PricingPage() {
           <div style={{ marginTop: 40, display: "flex", flexDirection: "column", gap: 20 }}>
             {[
               {
-                q: "Can I try the Professional plan for free?",
-                a: "Yes! We offer a 14 day free trial of any paid plan. No credit card required to start.",
+                q: "Is there really a 14 day free trial?",
+                a: "Yes. Every plan starts with a 14 day free trial. Your card is collected upfront but not charged until the trial ends. Cancel anytime during the trial at no cost.",
               },
               {
-                q: "What happens when I reach the Starter plan limit?",
-                a: "You can still receive bookings, but you will not be able to accept new ones until the next month. Upgrade anytime to remove limits.",
+                q: "Can I switch plans later?",
+                a: "Yes. Upgrade or downgrade anytime from your billing dashboard. Prorated charges and credits are handled automatically.",
               },
               {
                 q: "Can I cancel anytime?",
                 a: "Absolutely. No contracts, no cancellation fees. Cancel from your dashboard at any time and keep using Curb until the end of your billing cycle.",
               },
               {
-                q: "Do clients pay any fees?",
-                a: "Never. Curb is completely free for clients. There are no booking fees, service fees, or hidden charges.",
+                q: "Do homeowners pay any fees?",
+                a: "Never. Curb is completely free for homeowners. There are no booking fees, service fees, or hidden charges.",
               },
               {
                 q: "How does payment processing work?",
@@ -412,18 +381,17 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Footer CTA */}
       <section style={{ background: "#059669", padding: "64px 24px" }}>
         <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: 32, fontWeight: 800, color: "white" }}>
             Ready to grow your business?
           </h2>
           <p style={{ marginTop: 16, fontSize: 16, color: "#a7f3d0", lineHeight: 1.6 }}>
-            Join service professionals already using Curb to find
-            clients and manage their business.
+            Join contractors already using Curb to find homeowners
+            and run their business.
           </p>
           <Link
-            href="/signup"
+            href="/signup?role=contractor"
             style={{
               marginTop: 32,
               display: "inline-flex",
@@ -438,7 +406,7 @@ export default function PricingPage() {
               textDecoration: "none",
             }}
           >
-            Get Started for Free
+            Start 14 Day Free Trial
             <ArrowRight size={14} />
           </Link>
         </div>

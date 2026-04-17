@@ -125,7 +125,8 @@ export async function POST(request: NextRequest) {
 
 function getPlanFromPriceId(priceId: string | null): string {
   if (!priceId) return "starter";
+  if (priceId === process.env.NEXT_PUBLIC_STRIPE_STARTER_PRICE_ID) return "starter";
   if (priceId === process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID) return "professional";
   if (priceId === process.env.NEXT_PUBLIC_STRIPE_ENTERPRISE_PRICE_ID) return "enterprise";
-  return "professional";
+  return "starter";
 }
