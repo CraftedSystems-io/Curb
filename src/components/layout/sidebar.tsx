@@ -12,6 +12,7 @@ import {
   Camera,
   BarChart3,
   CreditCard,
+  FileSignature,
 } from "lucide-react";
 import { clsx } from "clsx";
 
@@ -23,6 +24,7 @@ const navItems = [
   { href: "/pro/bookings", label: "Bookings", icon: ClipboardList },
   { href: "/pro/reviews", label: "Reviews", icon: Star },
   { href: "/pro/portfolio", label: "Portfolio", icon: Camera },
+  { href: "/pro/waivers", label: "Waivers", icon: FileSignature },
   { href: "/pro/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/pro/billing", label: "Billing", icon: CreditCard },
 ];

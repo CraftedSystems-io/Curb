@@ -11,6 +11,8 @@ import {
   getDailyLogs,
   getCheckins,
   getActiveShareToken,
+  getWaiverTemplatesForContractor,
+  getSignaturesForBooking,
 } from "@/lib/queries/workspace";
 import { Avatar } from "@/components/ui/avatar";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -38,16 +40,27 @@ export default async function ContractorBookingDetailPage({
 
   const clientProfile = booking.profiles;
 
-  const [events, scope, invoices, photos, logs, checkins, shareToken] =
-    await Promise.all([
-      getBookingEvents(id),
-      getScopeItems(id),
-      getInvoices(id),
-      getBookingPhotos(id),
-      getDailyLogs(id),
-      getCheckins(id),
-      getActiveShareToken(id),
-    ]);
+  const [
+    events,
+    scope,
+    invoices,
+    photos,
+    logs,
+    checkins,
+    shareToken,
+    waiverTemplates,
+    waiverSignatures,
+  ] = await Promise.all([
+    getBookingEvents(id),
+    getScopeItems(id),
+    getInvoices(id),
+    getBookingPhotos(id),
+    getDailyLogs(id),
+    getCheckins(id),
+    getActiveShareToken(id),
+    getWaiverTemplatesForContractor(booking.contractor_id),
+    getSignaturesForBooking(id),
+  ]);
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -159,6 +172,7 @@ export default async function ContractorBookingDetailPage({
           stage={booking.stage ?? null}
           role="contractor"
           quotedPrice={booking.quoted_price ?? null}
+          recurrenceRule={booking.recurrence_rule ?? null}
           events={events}
           scope={scope}
           invoices={invoices}
@@ -166,6 +180,8 @@ export default async function ContractorBookingDetailPage({
           logs={logs}
           checkins={checkins}
           shareToken={shareToken}
+          waiverTemplates={waiverTemplates}
+          waiverSignatures={waiverSignatures}
         />
       </div>
 

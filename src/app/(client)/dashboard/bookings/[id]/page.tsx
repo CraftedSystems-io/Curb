@@ -10,6 +10,8 @@ import {
   getBookingPhotos,
   getDailyLogs,
   getCheckins,
+  getWaiverTemplatesForContractor,
+  getSignaturesForBooking,
 } from "@/lib/queries/workspace";
 import { Avatar } from "@/components/ui/avatar";
 import { TierBadge } from "@/components/ui/tier-badge";
@@ -47,14 +49,19 @@ export default async function ClientBookingDetailPage({
     .eq("booking_id", id)
     .single();
 
-  const [events, scope, invoices, photos, logs, checkins] = await Promise.all([
-    getBookingEvents(id),
-    getScopeItems(id),
-    getInvoices(id),
-    getBookingPhotos(id),
-    getDailyLogs(id),
-    getCheckins(id),
-  ]);
+  const [events, scope, invoices, photos, logs, checkins, waiverSignatures] =
+    await Promise.all([
+      getBookingEvents(id),
+      getScopeItems(id),
+      getInvoices(id),
+      getBookingPhotos(id),
+      getDailyLogs(id),
+      getCheckins(id),
+      getSignaturesForBooking(id),
+    ]);
+  const waiverTemplates = booking.contractor_id
+    ? await getWaiverTemplatesForContractor(booking.contractor_id)
+    : [];
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
@@ -151,6 +158,7 @@ export default async function ClientBookingDetailPage({
           stage={booking.stage ?? null}
           role="client"
           quotedPrice={booking.quoted_price ?? null}
+          recurrenceRule={booking.recurrence_rule ?? null}
           events={events}
           scope={scope}
           invoices={invoices}
@@ -158,6 +166,8 @@ export default async function ClientBookingDetailPage({
           logs={logs}
           checkins={checkins}
           shareToken={null}
+          waiverTemplates={waiverTemplates}
+          waiverSignatures={waiverSignatures}
         />
       </div>
 

@@ -9,6 +9,7 @@ import {
   ClipboardList,
   MapPin,
   Share2,
+  FileSignature,
 } from "lucide-react";
 
 export type WorkspaceTab =
@@ -18,6 +19,7 @@ export type WorkspaceTab =
   | "photos"
   | "logs"
   | "checkin"
+  | "waivers"
   | "share";
 
 const ALL_TABS: { id: WorkspaceTab; label: string; icon: React.ReactNode }[] = [
@@ -27,6 +29,7 @@ const ALL_TABS: { id: WorkspaceTab; label: string; icon: React.ReactNode }[] = [
   { id: "photos", label: "Photos", icon: <Camera className="h-4 w-4" /> },
   { id: "logs", label: "Daily Logs", icon: <ClipboardList className="h-4 w-4" /> },
   { id: "checkin", label: "Check-in", icon: <MapPin className="h-4 w-4" /> },
+  { id: "waivers", label: "Waivers", icon: <FileSignature className="h-4 w-4" /> },
   { id: "share", label: "Share", icon: <Share2 className="h-4 w-4" /> },
 ];
 

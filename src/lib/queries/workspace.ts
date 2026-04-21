@@ -7,6 +7,8 @@ import type {
   DailyLog,
   BookingCheckin,
   BookingShareToken,
+  WaiverTemplate,
+  WaiverSignature,
 } from "@/types";
 
 export async function getBookingEvents(bookingId: string): Promise<BookingEvent[]> {
@@ -80,6 +82,33 @@ export async function getActiveShareToken(bookingId: string): Promise<BookingSha
     .limit(1)
     .maybeSingle();
   return (data ?? null) as BookingShareToken | null;
+}
+
+export async function getWaiverTemplatesForContractor(
+  contractorId: string
+): Promise<WaiverTemplate[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("waiver_templates")
+    .select("*")
+    .eq("contractor_id", contractorId)
+    .eq("is_active", true)
+    .order("created_at", { ascending: false });
+  return (data ?? []) as WaiverTemplate[];
+}
+
+export async function getSignaturesForBooking(
+  bookingId: string
+): Promise<(WaiverSignature & { waiver_templates?: { title: string } })[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("waiver_signatures")
+    .select("*, waiver_templates (title)")
+    .eq("booking_id", bookingId)
+    .order("signed_at", { ascending: false });
+  return (data ?? []) as (WaiverSignature & {
+    waiver_templates?: { title: string };
+  })[];
 }
 
 export async function getBookingByShareToken(token: string) {
