@@ -10,6 +10,7 @@ interface BookingCardProps {
   booking: {
     id: string;
     status: BookingStatus;
+    job_number?: string | null;
     scheduled_date: string;
     scheduled_time: string | null;
     address: string;
@@ -36,6 +37,11 @@ export function BookingCard({ booking, otherParty, href }: BookingCardProps) {
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
               <div>
+                {booking.job_number && (
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-700">
+                    {booking.job_number}
+                  </p>
+                )}
                 <h3 className="font-semibold text-gray-900 truncate">
                   {booking.services.name}
                 </h3>

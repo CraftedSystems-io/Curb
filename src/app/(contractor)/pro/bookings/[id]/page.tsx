@@ -3,11 +3,21 @@ import Link from "next/link";
 import { ArrowLeft, Calendar, MapPin, FileText, Phone, Mail } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getBookingById } from "@/lib/queries/bookings";
+import {
+  getBookingEvents,
+  getScopeItems,
+  getInvoices,
+  getBookingPhotos,
+  getDailyLogs,
+  getCheckins,
+  getActiveShareToken,
+} from "@/lib/queries/workspace";
 import { Avatar } from "@/components/ui/avatar";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { BookingActions } from "@/components/bookings/booking-actions";
 import { ChatWrapper } from "@/components/chat/chat-wrapper";
 import { Card, CardContent } from "@/components/ui/card";
+import { ProjectWorkspace } from "@/components/workspace/project-workspace";
 import { formatDate, formatTime, formatCurrency } from "@/lib/utils/format";
 
 export default async function ContractorBookingDetailPage({
@@ -28,8 +38,19 @@ export default async function ContractorBookingDetailPage({
 
   const clientProfile = booking.profiles;
 
+  const [events, scope, invoices, photos, logs, checkins, shareToken] =
+    await Promise.all([
+      getBookingEvents(id),
+      getScopeItems(id),
+      getInvoices(id),
+      getBookingPhotos(id),
+      getDailyLogs(id),
+      getCheckins(id),
+      getActiveShareToken(id),
+    ]);
+
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="mx-auto max-w-4xl">
       <Link
         href="/pro/bookings"
         className="mb-6 inline-flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900"
@@ -38,8 +59,13 @@ export default async function ContractorBookingDetailPage({
         Back to bookings
       </Link>
 
-      <div className="flex items-start justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Booking Details</h1>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            {booking.job_number ?? "Booking"}
+          </p>
+          <h1 className="mt-1 text-2xl font-bold text-gray-900">Project Detail</h1>
+        </div>
         <StatusBadge status={booking.status} />
       </div>
 
@@ -123,6 +149,23 @@ export default async function ContractorBookingDetailPage({
           bookingId={booking.id}
           currentStatus={booking.status}
           role="contractor"
+        />
+      </div>
+
+      {/* Project workspace */}
+      <div className="mt-8">
+        <ProjectWorkspace
+          bookingId={booking.id}
+          stage={booking.stage ?? null}
+          role="contractor"
+          quotedPrice={booking.quoted_price ?? null}
+          events={events}
+          scope={scope}
+          invoices={invoices}
+          photos={photos}
+          logs={logs}
+          checkins={checkins}
+          shareToken={shareToken}
         />
       </div>
 

@@ -6,6 +6,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { StarRating } from "@/components/ui/star-rating";
 import { Card } from "@/components/ui/card";
+import { TierBadge } from "@/components/ui/tier-badge";
 import { FavoriteButton } from "@/components/favorites/favorite-button";
 import { formatDistance, formatCurrency } from "@/lib/utils/format";
 import { clsx } from "clsx";
@@ -45,9 +46,12 @@ export function ContractorCard({
             size="lg"
           />
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-gray-900 truncate pr-8">
-              {contractor.business_name || contractor.full_name}
-            </h3>
+            <div className="flex items-center gap-2 pr-8">
+              <h3 className="font-semibold text-gray-900 truncate">
+                {contractor.business_name || contractor.full_name}
+              </h3>
+              {contractor.tier && <TierBadge tier={contractor.tier} size="xs" />}
+            </div>
             <div className="mt-1 flex items-center gap-2">
               <StarRating rating={contractor.rating_avg} size={14} />
               <span className="text-xs text-gray-500">
